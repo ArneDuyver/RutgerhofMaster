@@ -1,9 +1,15 @@
 package com.kindeyeindustries.rutgerhofmaster;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,15 +22,21 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import static com.kindeyeindustries.rutgerhofmaster.App.CHANNEL_ID;
 
 public class MainActivity extends AppCompatActivity {
     public static final String TAG = "MainActivity";
     private Button restaurant, taverne, terras;
     private Boolean restaurantBool, taverneBool, terrasBool;
     private FirebaseFirestore db;
+    private NotificationManagerCompat notificationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,12 +51,11 @@ public class MainActivity extends AppCompatActivity {
 
         getFirestoreData();
 
-
-
+        //<editor-fold desc="OnClickListeners">
         restaurant.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("ResourceAsColor")
             @Override
-            public void onClick(View view) {
+            public void onClick(View view) {https://stackoverflow.com/questions/8070212/why-set-setbackgroundcolor-is-not-working-in-my-custom-listview
                 clearFirebase(1);
                 restaurant.setBackgroundResource(R.color.buttonColor);
             }
@@ -63,6 +74,46 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 clearFirebase(3);
                 terras.setBackgroundResource(R.color.buttonColor);
+            }
+        });
+        //</editor-fold>
+
+        notificationManager = NotificationManagerCompat.from(this);
+
+
+        DocumentReference docRef = db.collection("Rutgerhof").document("N91YwwPaBhR4p1vy09TK");
+        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot snapshot,
+                                @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    Log.w(TAG, "Listen failed.", e);
+                    return;
+                }
+
+                if (snapshot != null && snapshot.exists()) {
+                    Log.d(TAG, "Current data: " + snapshot.getData());
+                    restaurantBool = snapshot.getBoolean("Restaurant");
+                    taverneBool = snapshot.getBoolean("Taverne");
+                    terrasBool = snapshot.getBoolean("Terras");
+
+                    if (restaurantBool){
+                        restaurant.setBackgroundResource(R.color.buttonColorRed);
+                        sendNotification("Restaurant",1);
+                    }
+                    if (taverneBool){
+                        taverne.setBackgroundResource(R.color.buttonColorRed);
+                        sendNotification("Taverne",2);
+
+                    }
+                    if (terrasBool){
+                        terras.setBackgroundResource(R.color.buttonColorRed);
+                        sendNotification("Terras",3);
+
+                    }
+                } else {
+                    Log.d(TAG, "Current data: null");
+                }
             }
         });
     }
@@ -126,6 +177,22 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    public void sendNotification(String message,int notificationId){
+        Intent activityIntent = new Intent(this, MainActivity.class);
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, activityIntent, 0);
+
+        Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_baseline_add_alert_24)
+                .setContentTitle("Bel gaat")
+                .setContentText(message)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setCategory(NotificationCompat.CATEGORY_ALARM)
+                .setContentIntent(contentIntent)
+                .build();
+
+        notificationManager.notify(notificationId,notification);
     }
 
 }

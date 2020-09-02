@@ -3,4 +3,5 @@
     <string name="main_btn_restaurant">Restaurant</string>
     <string name="main_btn_taverne">Taverne</string>
     <string name="main_btn_terras">Terras</string>
+    <string name="notification_channel_description">Laat je weten of op het belletje gedrukt werd</string>
 </resources>
