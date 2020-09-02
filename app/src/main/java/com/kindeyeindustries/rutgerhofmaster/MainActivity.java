@@ -100,16 +100,22 @@ public class MainActivity extends AppCompatActivity {
                     if (restaurantBool){
                         restaurant.setBackgroundResource(R.color.buttonColorRed);
                         sendNotification("Restaurant",1);
+                    } else {
+                        restaurant.setBackgroundResource(R.color.buttonColor);
                     }
                     if (taverneBool){
                         taverne.setBackgroundResource(R.color.buttonColorRed);
                         sendNotification("Taverne",2);
 
+                    }else {
+                        taverne.setBackgroundResource(R.color.buttonColor);
                     }
                     if (terrasBool){
                         terras.setBackgroundResource(R.color.buttonColorRed);
                         sendNotification("Terras",3);
 
+                    }else {
+                        terras.setBackgroundResource(R.color.buttonColor);
                     }
                 } else {
                     Log.d(TAG, "Current data: null");
