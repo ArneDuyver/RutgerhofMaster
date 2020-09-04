@@ -38,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private NotificationManagerCompat notificationManager;
 
+    //TODO: fix problem where notification goes off again when u press the notification
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
