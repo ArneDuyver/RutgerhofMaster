@@ -3,7 +3,11 @@ package com.kindeyeindustries.rutgerhofmaster;
 import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
+import android.os.PowerManager;
+import android.provider.Settings;
 
 public class App extends Application {
     public static final String CHANNEL_ID = "notification_channel";
@@ -27,5 +31,7 @@ public class App extends Application {
             NotificationManager manager = getSystemService(NotificationManager.class);
             manager.createNotificationChannel(channel);
         }
+
+
     }
 }

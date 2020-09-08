@@ -8,13 +8,14 @@
 
     <Button
         android:id="@+id/main_btn_restaurant"
-        android:layout_width="350dp"
+        android:layout_width="wrap_content"
         android:layout_height="0sp"
         android:layout_marginStart="64dp"
         android:layout_marginLeft="64dp"
         android:layout_marginTop="32dp"
         android:layout_marginBottom="32dp"
         android:background="@color/buttonColor"
+        android:padding="8dp"
         android:text="@string/main_btn_restaurant"
         android:textSize="36sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -23,9 +24,10 @@
 
     <Button
         android:id="@+id/main_btn_taverne"
-        android:layout_width="350dp"
+        android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:background="@color/buttonColor"
+        android:padding="64dp"
         android:text="@string/main_btn_taverne"
         android:textSize="36sp"
         app:layout_constraintBottom_toBottomOf="@+id/main_btn_restaurant"
@@ -35,11 +37,12 @@
 
     <Button
         android:id="@+id/main_btn_terras"
-        android:layout_width="350dp"
+        android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginEnd="64dp"
         android:layout_marginRight="64dp"
         android:background="@color/buttonColor"
+        android:padding="64dp"
         android:text="@string/main_btn_terras"
         android:textSize="36sp"
         app:layout_constraintBottom_toBottomOf="@+id/main_btn_restaurant"
